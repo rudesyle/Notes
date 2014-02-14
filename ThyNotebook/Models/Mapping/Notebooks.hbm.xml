@@ -1,0 +1,15 @@
+﻿<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="ThyNotebook.Web.Models" assembly="ThyNotebook.Web">
+  <class name="Notebook" table="notebooks" dynamic-update="true">
+    <id name="NotebookId" column="NotebookId" type="int" unsaved-value="0">
+      <generator class="native" />
+    </id>
+    <property name="Name" type="string" length="200" not-null="true" />
+    <property name="Description" type="string" />
+    <property name="CreateDate" type="Timestamp" length="10000000" />
+    <!--<many-to-one name="Notes" column="NotebookId" class="NotebookId" insert="false" update="false" cascade="delete" />-->
+    <set name="Notes" table="note" cascade="all-delete-orphan" inverse="true">
+      <key column="NotebookId" foreign-key="FK_Notes_Notebooks" />
+      <one-to-many class="Note" />
+    </set>
+  </class>
+</hibernate-mapping>

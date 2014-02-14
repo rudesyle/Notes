@@ -1,0 +1,186 @@
+﻿body {
+    background: rgb(232, 232, 232);
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+.ng-cloak { display: none; }
+
+#applicationHost {
+    -moz-border-radius: 0 0 6px 6px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.3) 0px 7px 30px;
+    -o-box-shadow: rgba(0, 0, 0, 0.3) 0px 7px 30px;
+    -webkit-border-radius: 0 0 6px 6px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.3) 0px 7px 30px;
+    background: white;
+    
+    border-radius: 0 0 6px 6px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 7px 30px;
+    left: 50%;
+    margin-left: -350px;
+    
+    margin-top: 20px;
+    position: absolute;
+    width: 700px;
+}
+
+header { text-align: center; }
+
+header h1, h2 {
+    font-size: 4em;
+    text-shadow: rgba(0, 0, 0, .5) 2.5px 2.5px 2px;
+}
+
+header h2 { font-size: 2em; }
+
+header input {
+    font-size: 3em;
+    margin: 0.25em 0 0.5em 0;
+    padding: 8px;
+}
+
+section {
+    font-size: 2em;
+    left: 50%;
+    margin-bottom: 1em;
+    margin-left: -275px;
+    position: relative;
+    width: 550px;
+}
+
+section .mark-all {
+    position: relative;
+    top: -15px;
+}
+
+section .mark-all label { font-size: .75em; }
+
+section li {
+    border-bottom: 1px solid rgb(191, 191, 191);
+    padding: 16px 0 16px 0;
+}
+
+section li:last-child { border-bottom: 0; }
+
+section label.done {
+    /*Hack for IE9 repaint bug*/
+    padding: 1px;
+    text-decoration: line-through;
+}
+
+section label.archived { color: tan; }
+
+section li a {
+    display: none;
+    float: right;
+    text-decoration: none;
+}
+
+section li:hover a { display: block; }
+
+section li input[type="text"] {
+    font-size: 1em;
+    width: 548px;
+}
+
+footer {
+    -moz-border-radius: 0 0 6px 6px;
+    -moz-box-shadow: rgba(0, 0, 0, 1) -1px 0px 1px;
+    -o-box-shadow: rgba(0, 0, 0, 1) -1px 0px 1px;
+    -webkit-border-radius: 0 0 6px 6px;
+    -webkit-box-shadow: rgba(0, 0, 0, 1) -1px 0px 1px;
+    
+    background: blue;
+    
+    background: #1e5799;
+    border-radius: 0 0 6px 6px;
+    border-top: 1px solid black;
+    
+    box-shadow: rgba(0, 0, 0, 1) 0px -1px 1px;
+    color: white;
+    font-weight: bold;
+    height: 35px;
+}
+
+footer div {
+    float: left;
+    left: 8px;
+    position: relative;
+    top: 8px;
+}
+
+footer a {
+    -moz-border-radius: 12px;
+    -moz-box-shadow: rgba(0, 0, 0, 1) 0px 0px 10px;
+    
+    -o-box-shadow: rgba(0, 0, 0, 1) 0px 0px 10px;
+    -webkit-border-radius: 12px;
+    -webkit-box-shadow: rgba(0, 0, 0, 1) 0px 0px 10px;
+    background: transparent;
+    border: 1px solid black;
+    border-radius: 12px;
+    
+    box-shadow: rgba(0, 0, 0, 1) 0px 0px 10px;
+    
+    color: white;
+    float: right;
+    padding: 3px 8px;
+    
+    position: relative;
+    right: 10px;
+    text-decoration: none;
+    top: 5px;
+}
+
+.controlLinks {
+    font-size: .5em;
+    position: relative;
+    top: 4px;
+}
+
+@media screen and (max-width: 700px) {
+    #applicationHost {
+        height: 100%;
+        left: 0;
+        margin: 0;
+        position: fixed;
+        top: 4px;
+        width: 100%;
+    }
+
+    header h1 { font-size: 2.5em; }
+
+    header h2 { font-size: 1.5em; }
+
+    header input {
+        font-size: 1.5em;
+        padding: 4px;
+    }
+
+    section {
+        font-size: 1.5em;
+        margin-left: -140px;
+        width: 280px;
+    }
+
+    section .mark-all {
+        position: relative;
+        top: -10px;
+    }
+
+    section .mark-all label { font-size: .75em; }
+
+    section li input[type="text"] {
+        font-size: 1em;
+        width: 270px;
+    }
+
+    footer {
+        -moz-border-radius: 0;
+        -webkit-border-radius: 0;
+        border-radius: 0;
+        
+        bottom: 0px;
+        position: fixed;
+        width: 100%;
+    }
+}

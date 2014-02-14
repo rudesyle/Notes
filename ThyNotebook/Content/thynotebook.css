@@ -1,0 +1,29 @@
+﻿header { text-align: center; }
+
+header h1, h2 {
+    font-size: 4em;
+    text-shadow: rgba(0, 0, 0, .5) 2.5px 2.5px 2px;
+}
+
+header h2 { font-size: 2em; }
+
+header input {
+    font-size: 3em;
+    margin: 0.25em 0 0.5em 0;
+    padding: 8px;
+}
+
+section {
+}
+
+section .mark-all {
+    position: relative;
+    top: -15px;
+}
+
+section .mark-all label { font-size: .75em; }
+
+section li {
+    border-bottom: 1px solid rgb(191, 191, 191);
+    padding: 16px 0 16px 0;
+}
