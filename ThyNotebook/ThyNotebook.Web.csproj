@@ -144,15 +144,18 @@
     <Content Include="Content\toastr.css" />
     <Content Include="Content\todo.css" />
     <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
     <Content Include="Index.html" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
-    <Content Include="Scripts\app\dataservice.js" />
-    <Content Include="Scripts\app\logger.js" />
-    <Content Include="Scripts\app\controller.js" />
+    <Content Include="Scripts\appOLD\dataservice.js" />
+    <Content Include="Scripts\appOLD\logger.js" />
+    <Content Include="Scripts\appOLD\controller.js" />
     <None Include="Scripts\jquery-1.8.3.intellisense.js" />
-    <Content Include="Scripts\app\main.js" />
+    <Content Include="Scripts\appOLD\main.js" />
     <None Include="Scripts\breeze.intellisense.js" />
+    <Content Include="Scripts\app\app.js" />
+    <Content Include="Scripts\app\controllers.js" />
     <Content Include="Scripts\breeze.debug.js" />
     <Content Include="Scripts\breeze.min.js" />
     <Content Include="Scripts\breeze.savequeuing.js" />
@@ -168,13 +171,10 @@
     <Compile Include="App_Start\BreezeSimpleCorsHandler.cs" />
     <Compile Include="App_Start\BreezeWebApiConfig.cs" />
     <Compile Include="Controllers\NotebookController.cs" />
-    <Compile Include="FluentNHibernateConfig.cs" />
     <Compile Include="DevartPgDriver.cs" />
-    <Compile Include="Models\Mapping\NotebookMap.cs" />
-    <Compile Include="Models\ThyNotebookContext.cs" />
-    <Compile Include="Models\Note.cs" />
-    <Compile Include="Models\Notebook.cs" />
-    <Compile Include="Models\NHConfig.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -190,12 +190,14 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Models\Mapping\Notebooks.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Models\Mapping\Notes.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <ProjectReference Include="..\ThyNotebook.Business\ThyNotebook.Business.csproj">
+      <Project>{fada800b-c5ee-4188-bb42-d0184aea4d80}</Project>
+      <Name>ThyNotebook.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ThyNotebook.Data\ThyNotebook.Data.csproj">
+      <Project>{ee35daf3-1eb3-44bf-94f7-74ca52185605}</Project>
+      <Name>ThyNotebook.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -5,6 +5,10 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThyNotebook.Web", "ThyNotebook\ThyNotebook.Web.csproj", "{637A5817-2159-4612-AFB8-587B26C79097}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThyNotebook.Data", "ThyNotebook.Data\ThyNotebook.Data.csproj", "{EE35DAF3-1EB3-44BF-94F7-74CA52185605}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThyNotebook.Business", "ThyNotebook.Business\ThyNotebook.Business.csproj", "{FADA800B-C5EE-4188-BB42-D0184AEA4D80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{637A5817-2159-4612-AFB8-587B26C79097}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{637A5817-2159-4612-AFB8-587B26C79097}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{637A5817-2159-4612-AFB8-587B26C79097}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE35DAF3-1EB3-44BF-94F7-74CA52185605}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE35DAF3-1EB3-44BF-94F7-74CA52185605}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE35DAF3-1EB3-44BF-94F7-74CA52185605}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE35DAF3-1EB3-44BF-94F7-74CA52185605}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FADA800B-C5EE-4188-BB42-D0184AEA4D80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FADA800B-C5EE-4188-BB42-D0184AEA4D80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FADA800B-C5EE-4188-BB42-D0184AEA4D80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FADA800B-C5EE-4188-BB42-D0184AEA4D80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

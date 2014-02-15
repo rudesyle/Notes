@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Controllers;
-using Breeze.ContextProvider;
-using Breeze.ContextProvider.NH;
 using Breeze.WebApi2;
-using Newtonsoft.Json.Linq;
-using ThyNotebook.Web.Models;
+using ThyNotebook.Business;
+using ThyNotebook.Data;
 
 namespace ThyNotebook.Web.Controllers
 {
@@ -17,7 +14,6 @@ namespace ThyNotebook.Web.Controllers
         private static readonly TimeSpan RefreshRate = TimeSpan.FromMinutes(60);
         private static readonly object Locker = new object();
         private static DateTime _lastRefresh = DateTime.Now; // will first clear db at Now + "RefreshRate" 
-        private ThyNotebookContext _contextProvider;
 
         public NotebookController()
         {
@@ -26,32 +22,33 @@ namespace ThyNotebook.Web.Controllers
 
         protected override void Initialize(HttpControllerContext controllerContext)
         {
-            _contextProvider = new ThyNotebookContext();
         }
 
         // ~/breeze/notebook/Metadata 
-        [HttpGet]
+        /*[HttpGet]
         public string Metadata()
         {
             string r = _contextProvider.Metadata();
             return r;
         }
-
+        */
         // ~/breeze/notebook/ThyNotebooks
         // ~/breeze/notebook/ThyNotebooks?$filter=IsArchived eq false&$orderby=CreatedAt 
         [HttpGet]
-        public IQueryable<Notebook> GetAllNotebooks()
+        public List<Notebook> GetAllNotebooks()
         {
-            NhQueryableInclude<Notebook> returnValue = _contextProvider.Notebooks;
-            return returnValue;
+            var db = new NotebookDb();
+            List<Notebook> n = db.GetAll();
+            return n;
         }
 
+        /*
         // ~/breeze/notebook/SaveChanges
         [HttpPost]
         public SaveResult SaveChanges(JObject saveBundle)
         {
             return _contextProvider.SaveChanges(saveBundle);
-        }
+        }*/
 
         // ~/breeze/notebook/purge
         [HttpPost]

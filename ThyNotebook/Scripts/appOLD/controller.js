@@ -34,6 +34,7 @@ app.notebook.controller('ThyNotebookCtrl', function ($scope, $timeout, $http) {
 
     $scope.newNotebook = "";
     $scope.items = [];
+    $scope.items.notes = [];
     $scope.includeArchived = false;
 
     $scope.getAllNotebooks = function() {
@@ -42,22 +43,45 @@ app.notebook.controller('ThyNotebookCtrl', function ($scope, $timeout, $http) {
             .fail(queryFailed);
     };
 
+    //loop through  parent structure and get child nodes 1 level deep for initial load
+    $scope.bindChildNodes = function () {
+        for (var i = 0; i < $scope.items.length; i++) {
+            var notebookId = $scope.items[i].NotebookId;
+            $scope.items[i].notes = [];
+            console.log($scope.items[i].notes.length);
+            /*departmentService.getChildren(getSelectedEventId(), assignmentId).then(function (result) {
+                //i would send result to children here, but this function doesnt have access to the i var to know what parent the children belong too..
+                $scope.tempArr = result;
+            });
+            $scope.parents[i].children = $scope.tempArr;*/
+        }
+    };
+
     $scope.getAllNotebooks();
 
     //#region private functions
     function querySucceeded(data) {
+        $scope.items = data.results;
+       
+        console.log(data.results);
+        $scope.$apply();
+        app.logger.info("Fetched " + data.results.length + " Orders ");
+    }
+    function querySucceededOld(data) {
         $scope.items = [];
-
+        console.log(JSON.stringify(data.results));
         data.results.forEach(function(item) {
             extendItem(item);
             $scope.items.push(item);
-            console.log(item.Notes);
+            //$scope.bindChildNodes();
         });
         $scope.$apply();
 
         logger.info("Fetched notebooks " +
         ($scope.includeArchived ? "including archived" : "excluding archived"));
     }
+
+    
 
     function queryFailed(error) {
         logger.error(error.message, "Query failed");
