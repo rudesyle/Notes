@@ -1,4 +1,5 @@
-﻿; var notebookApp = angular.module('notebook',['ngGrid']);
+﻿; var notebookApp = angular.module('notebook', ['ngGrid', 'ui.bootstrap']);
+
 notebookApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/notebook', {
         templateUrl: 'Index.html',

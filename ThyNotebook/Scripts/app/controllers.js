@@ -1,16 +1,45 @@
-﻿; function ThyNotebookCtrl($scope, $http, $templateCache) {
+﻿; function ThyNotebookCtrl($scope, $http, $modal) {
 
     $scope.gridOptions = {
         data: 'selectedNotebook',
         jqueryUITheme: true,
-        columnDefs: [{ field: 'Name', displayName: 'Name' }, { field: 'CreatedDate', displayName: 'Created' }]
+        columnDefs: [{ field: 'Name', displayName: 'Name' }, { field: 'CreatedDate', displayName: 'Created' }],
+        enableRowSelection: true,
+        selectedItems: $scope.selectedGridItem,
+        multiSelect: false,
+        afterSelectionChange: function (rowItem,event) {
+            //$scope.GetNoteContent();
+            $scope.open();
+        }
+    };
+
+    $scope.open = function () {
+
+        var modalInstance = $modal.open({
+            templateUrl: 'contentEditor.html',
+            controller: ModalInstanceCtrl,
+            resolve: {
+                items: function () {
+                    return $scope.notes;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            $scope.selected = selectedItem;
+        }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+        });
+    };
+
+    $scope.GetNoteContent = function() {
+        $("#contentEditor").html("I AM A BIG TERDBAG");
     };
 
     $scope.GetAllNotebooks = function () {
         $http({
             method: 'GET',
-            url: 'breeze/notebook/GetAllNotebooks',
-            cache: $templateCache
+            url: 'breeze/notebook/GetAllNotebooks'
         }).
         success(function (data, status, headers, config) {
             $scope.notebooks = data.Notebooks;
@@ -21,12 +50,6 @@
             console.log("Request Failed");
         });
     };
-
-
-    //Get our helper methods
-    $scope.GetRatingImage = GetRatingImage;
-    $scope.GetActualPrice = GetActualPrice;
-    $scope.HasDiscount = HasDiscount;
 
     $scope.sendNotebook = function (notebook) {
         for(var i=0;i<=$scope.notes.length - 1;i++) {
@@ -39,65 +62,21 @@
     $scope.GetAllNotebooks();
 }
 
-function BookCtrl($scope, $http, $templateCache, $routeParams) {
-    $scope.bookId = $routeParams.bookId;
-    $scope.book = {};
+// Please note that $modalInstance represents a modal window (instance) dependency.
+// It is not the same as the $modal service used above.
 
-    $http({
-        method: 'GET',
-        url: 'api/book/' + $scope.bookId,
-        cache: $templateCache
-    }).
-    success(function (data, status, headers, config) {
-        $scope.book = data[0];
-    }).
-    error(function (data, status) {
-        console.log("Request Failed");
-    });
+var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
 
-    //Get our helper methods
-    $scope.GetRatingImage = GetRatingImage;
-    $scope.GetActualPrice = GetActualPrice;
-    $scope.HasDiscount = HasDiscount;
-}
+    $scope.items = items;
+    $scope.selected = {
+        item: $scope.items[0]
+    };
 
-//Gets rating image based on the rating value passed
-function GetRatingImage(rating) {
-    switch (rating) {
-        case 0:
-            return "0star.png";
-            break;
-        case 1:
-            return "1star.png";
-            break;
-        case 2:
-            return "2star.png";
-            break;
-        case 3:
-            return "3star.png";
-            break;
-        case 4:
-            return "4star.png";
-            break;
-        case 5:
-            return "5star.png";
-            break;
-    }
-}
+    $scope.ok = function () {
+        $modalInstance.close($scope.selected.item);
+    };
 
-//Gets the actual price after deducting the discount
-function GetActualPrice(price, discount) {
-    var discountString = Math.round(discount * 100) + "%";
-    var finalPrice = price - (price * discount)
-    if (discount > 0) {
-        return "Rs. " + Math.round(finalPrice) + "(" + discountString + ")";
-    }
-    else {
-        return "";
-    }
-};
-
-//Determines if there is any discount for the book or not
-function HasDiscount(discount) {
-    return (discount > 0);
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
 };

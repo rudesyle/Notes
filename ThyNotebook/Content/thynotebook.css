@@ -27,3 +27,18 @@ section li {
     border-bottom: 1px solid rgb(191, 191, 191);
     padding: 16px 0 16px 0;
 }
+
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+#notebook{
+    cursor:auto;
+}
+#header {
+    height: 100px;
+}
+.gridStyle
+{
+    border: 1px solid rgb(212,212,212);
+    width: 800px;
+    height: 400px;
+}
