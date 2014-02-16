@@ -8,11 +8,11 @@ namespace ThyNotebook.Data
     {
         public List<Notebook> GetAll()
         {
-            List<Notebook> q = GetDb().Fetch<Notebook, Note, Notebook>(
+            /*List<Notebook> q = GetDb().Fetch<Notebook, Note, Notebook>(
                 new NotebookMapper().MapIt,
                 "SELECT * FROM Notebook LEFT JOIN Note AS Notes ON Notebook.NotebookId=Notes.NotebookId ");
-
-            return q.ToList();
+            */
+            return GetDb().Query<Notebook>("SELECT * FROM Notebook").ToList();
         }
     }
 }

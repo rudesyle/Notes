@@ -1,31 +1,21 @@
 ﻿; function ThyNotebookCtrl($scope, $http, $templateCache) {
-    $scope.books = [];
 
-    //first lets get all the books
-    $http({
-        method: 'GET',
-        url: 'breeze/notebook/GetAllNotebooks',
-        cache: $templateCache
-    }).
-    success(function (data, status, headers, config) {
-        $scope.notebooks = data;
-    }).
-    error(function (data, status) {
-        console.log("Request Failed");
-    });
-       
+    $scope.gridOptions = {
+        data: 'selectedNotebook',
+        jqueryUITheme: true,
+        columnDefs: [{ field: 'Name', displayName: 'Name' }, { field: 'CreatedDate', displayName: 'Created' }]
+    };
 
-    //Get Books by their category
     $scope.GetAllNotebooks = function () {
         $http({
-            method: 'POST',
-            url: 'notebook/GetAllNotebooks',
-            //data: JSON.stringify(category),
-            headers: { 'Content-Type': 'application/json; charset=utf-8', 'dataType': 'json' },
+            method: 'GET',
+            url: 'breeze/notebook/GetAllNotebooks',
             cache: $templateCache
         }).
         success(function (data, status, headers, config) {
-            $scope.notebooks = data;
+            $scope.notebooks = data.Notebooks;
+            $scope.notes = data.Notes;
+            $scope.selectedNotebook = data.Notes;
         }).
         error(function (data, status) {
             console.log("Request Failed");
@@ -37,6 +27,16 @@
     $scope.GetRatingImage = GetRatingImage;
     $scope.GetActualPrice = GetActualPrice;
     $scope.HasDiscount = HasDiscount;
+
+    $scope.sendNotebook = function (notebook) {
+        for(var i=0;i<=$scope.notes.length - 1;i++) {
+            $scope.selectedNotebook = $scope.notes[0];
+            alert($scope.notes[0].Name);
+        }
+
+    };
+
+    $scope.GetAllNotebooks();
 }
 
 function BookCtrl($scope, $http, $templateCache, $routeParams) {

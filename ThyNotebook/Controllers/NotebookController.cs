@@ -5,6 +5,7 @@ using System.Web.Http.Controllers;
 using Breeze.WebApi2;
 using ThyNotebook.Business;
 using ThyNotebook.Data;
+using ThyNotebook.Web.ViewModels;
 
 namespace ThyNotebook.Web.Controllers
 {
@@ -24,22 +25,17 @@ namespace ThyNotebook.Web.Controllers
         {
         }
 
-        // ~/breeze/notebook/Metadata 
-        /*[HttpGet]
-        public string Metadata()
-        {
-            string r = _contextProvider.Metadata();
-            return r;
-        }
-        */
-        // ~/breeze/notebook/ThyNotebooks
-        // ~/breeze/notebook/ThyNotebooks?$filter=IsArchived eq false&$orderby=CreatedAt 
         [HttpGet]
-        public List<Notebook> GetAllNotebooks()
+        public NotebookViewModel GetAllNotebooks()
         {
-            var db = new NotebookDb();
-            List<Notebook> n = db.GetAll();
-            return n;
+            var notebookDb = new NotebookDb();
+            var noteDb = new NoteDb();
+            var vm = new NotebookViewModel();
+
+            vm.Notebooks = notebookDb.GetAll();
+            vm.Notes = noteDb.GetAll();
+
+            return vm;
         }
 
         /*

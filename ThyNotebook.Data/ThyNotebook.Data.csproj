@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="BaseData.cs" />
     <Compile Include="Models\PetaPoco.cs" />
+    <Compile Include="NoteDb.cs" />
     <Compile Include="NotebookDb.cs" />
     <Compile Include="NotebookMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

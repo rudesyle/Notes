@@ -9,35 +9,54 @@
         <link rel="stylesheet" href="Content/reset.css" />
         <link rel="stylesheet" href="Content/toastr.css" />
         <link rel="stylesheet" href="Content/thynotebook.css" />
+        <link rel="stylesheet" href="Content/ng-grid.min.css" />
         <style>
-            #notebook, #notes {
-                display: table-cell;
+            #notebook{
+                cursor:auto;
+            }
+            #header {
+                height: 100px;
+            }
+            .gridStyle
+            {
+                border: 1px solid rgb(212,212,212);
+                width: 800px;
+                height: 400px;
             }
         </style>
     </head>
     <body>
   
         <div id="applicationHost" data-ng-controller="ThyNotebookCtrl" class="ng-cloak">
-            <header>
+            <header id="header">
                 <h1>Thy Notebook Better Work!!!!</h1>
             </header>
-
-            <span ng-repeat="notebook in notebooks">
-                <h3>{{ notebook.Name }}</h3>
-                <span ng-repeat="note in notebook.Notes">
-                    <h2>{{ note.Name }}</h2>
-                </span>
-            </span>
+            <div id="left" style="float:left;width:300px;">
+                <ul>
+                    <li ng-repeat="notebook in notebooks" ng-click="sendNotebook(notebook)" id="notebook">
+                        {{ notebook.Name }}<p></p>                       
+                    </li>
+                </ul>
+            </div>
+            <div id="right" style="float:left">
+                <!--<div class="gridStyle" ng-grid="gridOptions" ng-repeat="notebook in notebooks | filter:{NotebookId: search}">
+                        <ul>
+                            <li ng-repeat="note in notebook.Notes">{{ note.Name }} , {{ note.NotebookId }}</li>
+                        </ul>
+                    </div>-->
+                <div id="right" style="float:left">
+                    <div class="gridStyle" ng-grid="gridOptions"></div>
+                </div>
+            </div>
+            
         </div>     
 
         <!-- 3rd party libraries -->
         <script src="Scripts/jquery-1.8.3.min.js"></script>
-        <script src="Scripts/q.js"></script>
-        <script src="Scripts/breeze.debug.js"></script>
-        <script src="Scripts/breeze.savequeuing.js"></script>
+        <script src="Scripts/q.js"></script>    
         <script src="Scripts/toastr.js"></script>
         <script src="Scripts/angular.js"></script>
-
+        <script src="Scripts/ng-grid.min.js"></script>
         <!-- App libraries -->
         <script src="Scripts/app/app.js"></script>
         <script src="Scripts/app/controllers.js"></script>
