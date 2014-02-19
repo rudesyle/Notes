@@ -17,24 +17,21 @@
     <body>
   
         <div id="applicationHost" data-ng-controller="ThyNotebookCtrl" class="ng-cloak">
-            <div id="modal-to-open" title="Notebook Name" ui-jq="dialog" ui-options="{width: 500, autoOpen: false, modal: true}">
-            </div>
+            <div id="modal-to-open" title="Notebook Name" ui-jq="dialog" ui-options="{width: 500, height:400, autoOpen: false, modal: true}" ></div>
+            <div id="addNotebookModal" title="Crreate Notebook" ui-jq="dialog" ui-options="{width: 250, height:200, autoOpen: false, modal: true}" ></div>
             <header id="header">
                 <h1>Thy Notebook Better Work!!!!</h1>
             </header>
             <div id="left" style="float:left;width:300px;">
+                
                 <ul>
+                    <li ng-click="openAddNotebook()" >Create Notebook</li>
                     <li ng-repeat="notebook in notebooks" ng-click="sendNotebook(notebook)" id="notebook">
                         {{ notebook.Name }}<p></p>                       
                     </li>
                 </ul>
             </div>
             <div id="right" style="float:left">
-                <!--<div class="gridStyle" ng-grid="gridOptions" ng-repeat="notebook in notebooks | filter:{NotebookId: search}">
-                        <ul>
-                            <li ng-repeat="note in notebook.Notes">{{ note.Name }} , {{ note.NotebookId }}</li>
-                        </ul>
-                    </div>-->
                 <div id="right" style="float:left">
                     <div class="gridStyle" ng-grid="gridOptions"></div>
                 </div>
@@ -45,20 +42,11 @@
         <script src="Scripts/jquery-1.8.3.min.js"></script>
         <script src="Scripts/q.js"></script>    
         <script src="Scripts/toastr.js"></script>
-        <script src="Scripts/angular.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.js"></script>
         <script src="Scripts/ng-grid.min.js"></script>
-        <script src="Content/ckeditor/ckeditor.js"></script>
-        <script src="Content/ckeditor/adapters/jquery.js"></script>
         <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.10.0.js"></script>
-        <script src="Scripts/bootstrap.min.js"></script>
         <!-- App libraries -->
         <script src="Scripts/app/app.js"></script>
         <script src="Scripts/app/controllers.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('#notebookContent').ckeditor(); 
-            });
-
-        </script>
     </body>
 </html>

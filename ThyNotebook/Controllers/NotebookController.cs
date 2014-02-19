@@ -38,6 +38,13 @@ namespace ThyNotebook.Web.Controllers
             return vm;
         }
 
+        [HttpPost]
+        public void SaveNote(Note note)
+        {
+            var noteDb = new NoteDb();
+            noteDb.Save(note);
+        }
+
         /*
         // ~/breeze/notebook/SaveChanges
         [HttpPost]

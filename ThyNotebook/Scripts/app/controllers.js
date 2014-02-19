@@ -3,36 +3,62 @@
     $scope.gridOptions = {
         data: 'selectedNotebook',
         jqueryUITheme: true,
-        columnDefs: [{ field: 'Name', displayName: 'Name' }, { field: 'CreatedDate', displayName: 'Created' }],
+        columnDefs: [{ field: 'Name', displayName: 'Name' }, { field: 'CreateDate', displayName: 'Created' }, { field: 'UpdateDate', displayName: 'Last Updated' }],
         enableRowSelection: true,
         selectedItems: $scope.selectedGridItem,
         multiSelect: false,
         afterSelectionChange: function (rowItem,event) {
-            //$scope.GetNoteContent();
+            $scope.note = rowItem.entity;
             $scope.open();
         }
     };
 
-    $scope.open = function () {
+    $scope.openAddNotebook = function() {
+        alert("test");
+    };
 
+    $scope.note = null;
+
+    $scope.open = function () {
         var modalInstance = $modal.open({
             templateUrl: 'contentEditor.html',
+            backdrop: 'static',
             controller: ModalInstanceCtrl,
             resolve: {
-                items: function () {
-                    return $scope.notes;
+                $http: function () {
+                    return $http;
+                },
+                note: function () {
+                    return $scope.note;
                 }
             }
         });
 
-        modalInstance.result.then(function (selectedItem) {
-            $scope.selected = selectedItem;
+        modalInstance.result.then(function (selectedNote) {
+            $scope.note = selectedNote;
+            $scope.save();
         }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
+            console.log('Modal dismissed at: ' + new Date());
         });
     };
 
-    $scope.GetNoteContent = function() {
+    $scope.save = function () {
+        console.log($scope.note);
+        $http({
+            url: '/breeze/notebook/SaveNote',
+            method: "POST",
+            data: $scope.note,
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .success(function (data, status, headers, config) {
+            $scope.navigationManager.goToListPage();
+        })
+        .error(function (data, status, headers, config) {
+            $scope.errorMessage = (data || { message: "Create operation failed." }).message + (' [HTTP-' + status + ']');
+        });
+    };
+
+    $scope.GetNoteContent = function () {
         $("#contentEditor").html("I AM A BIG TERDBAG");
     };
 
@@ -54,7 +80,6 @@
     $scope.sendNotebook = function (notebook) {
         for(var i=0;i<=$scope.notes.length - 1;i++) {
             $scope.selectedNotebook = $scope.notes[0];
-            alert($scope.notes[0].Name);
         }
 
     };
@@ -65,15 +90,26 @@
 // Please note that $modalInstance represents a modal window (instance) dependency.
 // It is not the same as the $modal service used above.
 
-var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
+var ModalInstanceCtrl = function ($scope, $modalInstance,$http, note) {
 
-    $scope.items = items;
-    $scope.selected = {
-        item: $scope.items[0]
-    };
+    $scope.editedNote = note;
 
     $scope.ok = function () {
-        $modalInstance.close($scope.selected.item);
+        $modalInstance.close($scope.editedNote);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+};
+
+
+var CreateNotebookCtrl = function ($scope, $modalInstance, $http, note) {
+
+    $scope.editedNote = note;
+
+    $scope.ok = function () {
+        $modalInstance.close($scope.editedNote);
     };
 
     $scope.cancel = function () {

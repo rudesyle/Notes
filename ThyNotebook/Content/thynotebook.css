@@ -30,8 +30,8 @@ section li {
 
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
-#notebook{
-    cursor:auto;
+#notebook,.ngRow,.ng-binding{
+    cursor:pointer !important;
 }
 #header {
     height: 100px;
