@@ -55,6 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseData.cs" />
+    <Compile Include="Business\Note.cs" />
+    <Compile Include="Business\Notebook.cs" />
+    <Compile Include="Business\NoteContent.cs" />
     <Compile Include="Models\PetaPoco.cs" />
     <Compile Include="NoteDb.cs" />
     <Compile Include="NotebookDb.cs" />

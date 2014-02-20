@@ -1,11 +1,20 @@
 ﻿; function ThyNotebookCtrl($scope, $http, $modal) {
 
+    $scope.newNotebook = {
+        Name: ''
+    };
+
+    $scope.filterOptions = {
+        filterText: ''
+    };
+
     $scope.gridOptions = {
-        data: 'selectedNotebook',
+        data: 'selectedNotes',
         jqueryUITheme: true,
         columnDefs: [{ field: 'Name', displayName: 'Name' }, { field: 'CreateDate', displayName: 'Created' }, { field: 'UpdateDate', displayName: 'Last Updated' }],
         enableRowSelection: true,
         selectedItems: $scope.selectedGridItem,
+        filterOptions: $scope.filterOptions,
         multiSelect: false,
         afterSelectionChange: function (rowItem,event) {
             $scope.note = rowItem.entity;
@@ -13,11 +22,45 @@
         }
     };
 
-    $scope.openAddNotebook = function() {
-        alert("test");
+    $scope.notebookFilter = function () {
+        var filterText = 'NotebookId:1';
+        if ($scope.filterOptions.filterText === '') {
+            $scope.filterOptions.filterText = filterText;
+        }
+        else if ($scope.filterOptions.filterText === filterText) {
+            $scope.filterOptions.filterText = '';
+        }
+    };
+
+    $scope.openAddNotebook = function () {
+        
+        var modalInstance = $modal.open({
+            templateUrl: 'createNotebook.html',
+            backdrop: 'static',
+            controller: CreateNotebookCtrl,
+            resolve: {
+                $http: function () {
+                    return $http;
+                },
+                notebook: function () {
+                    return $scope.newNotebook;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (newNotebook) {
+            console.log($scope.newNotebook);
+
+            $scope.newNotebook = newNotebook;
+            $scope.saveNotebook();
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+        });
     };
 
     $scope.note = null;
+
+    $scope.selectedNotes = [];
 
     $scope.open = function () {
         var modalInstance = $modal.open({
@@ -36,13 +79,13 @@
 
         modalInstance.result.then(function (selectedNote) {
             $scope.note = selectedNote;
-            $scope.save();
+            $scope.saveNote();
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
         });
     };
 
-    $scope.save = function () {
+    $scope.saveNote = function () {
         console.log($scope.note);
         $http({
             url: '/breeze/notebook/SaveNote',
@@ -58,14 +101,31 @@
         });
     };
 
-    $scope.GetNoteContent = function () {
+    $scope.saveNotebook = function () {
+        $http({
+            url: '/breeze/notebook/SaveNotebook',
+            method: "POST",
+            data: $scope.newNotebook,
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .success(function (data, status, headers, config) {
+            $scope.notebooks.push(data);
+            $scope.newNotebook = null;
+            $scope.navigationManager.goToListPage();
+        })
+        .error(function (data, status, headers, config) {
+            $scope.errorMessage = (data || { message: "Save notebook operation failed." }).message + (' [HTTP-' + status + ']');
+        });
+    };
+
+    $scope.getNoteContent = function () {
         $("#contentEditor").html("I AM A BIG TERDBAG");
     };
 
-    $scope.GetAllNotebooks = function () {
+    $scope.getAllNotebooks = function () {
         $http({
             method: 'GET',
-            url: 'breeze/notebook/GetAllNotebooks'
+            url: 'breeze/notebook/getAllNotebooks'
         }).
         success(function (data, status, headers, config) {
             $scope.notebooks = data.Notebooks;
@@ -77,18 +137,18 @@
         });
     };
 
-    $scope.sendNotebook = function (notebook) {
-        for(var i=0;i<=$scope.notes.length - 1;i++) {
-            $scope.selectedNotebook = $scope.notes[0];
+    $scope.filterNotebook = function (notebookId) {
+        $scope.selectedNotes = [];
+        for (var i = 0; i <= $scope.notes.length - 1; i++) {
+            if ($scope.notes[i].NotebookId == notebookId) {
+                $scope.selectedNotes.push($scope.notes[i]);
+            }
+            
         }
-
     };
 
-    $scope.GetAllNotebooks();
+    $scope.getAllNotebooks();
 }
-
-// Please note that $modalInstance represents a modal window (instance) dependency.
-// It is not the same as the $modal service used above.
 
 var ModalInstanceCtrl = function ($scope, $modalInstance,$http, note) {
 
@@ -103,13 +163,14 @@ var ModalInstanceCtrl = function ($scope, $modalInstance,$http, note) {
     };
 };
 
+var CreateNotebookCtrl = function ($scope, $modalInstance, $http) {
 
-var CreateNotebookCtrl = function ($scope, $modalInstance, $http, note) {
-
-    $scope.editedNote = note;
+    $scope.newNotebook = {
+        Name: ''
+    };
 
     $scope.ok = function () {
-        $modalInstance.close($scope.editedNote);
+        $modalInstance.close($scope.newNotebook);
     };
 
     $scope.cancel = function () {

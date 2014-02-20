@@ -1,19 +1,17 @@
 ﻿
- <div>
-        <div class="modal-header">
-            <h3>{{editedNote.Name}}</h3>
+<div>
+    <div class="modal-header">
+        <h3>Create Notebook</h3>
+    </div>
+    <div class="modal-body">
+        <div>
+            <label class="control-label" for="title">Notebook name</label>
+            <input type="text" name="title" data-ng-model="newNotebook.Name" />
         </div>
-        <div class="modal-body">
-            <div>
-                <label class="control-label" for="title">Note name</label>
-                <input type="text" name="title" data-ng-model="editedNote.Name" />
-            </div>
-            <br />
-            <textarea id="notebookContent" cols="80" rows="20" data-ng-model="editedNote.Content"></textarea>
-            <br />
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-        </div>
+        <br />
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
 </div>

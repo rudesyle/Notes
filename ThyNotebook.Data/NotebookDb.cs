@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ThyNotebook.Business;
 
@@ -8,11 +9,25 @@ namespace ThyNotebook.Data
     {
         public List<Notebook> GetAll()
         {
-            /*List<Notebook> q = GetDb().Fetch<Notebook, Note, Notebook>(
-                new NotebookMapper().MapIt,
-                "SELECT * FROM Notebook LEFT JOIN Note AS Notes ON Notebook.NotebookId=Notes.NotebookId ");
-            */
             return GetDb().Query<Notebook>("SELECT * FROM Notebook").ToList();
+        }
+
+        public Notebook Save(Notebook notebook)
+        {
+            notebook.UpdateDate = DateTime.Now;
+
+            if (notebook.NotebookId == 0)
+            {
+
+                notebook.CreateDate = notebook.UpdateDate;
+                GetDb().Insert("notebook", "NotebookId", notebook);
+            }
+            else
+            {
+                GetDb().Update("notebook", "NotebookId", notebook);
+            }
+
+            return notebook;
         }
     }
 }

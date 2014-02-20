@@ -22,12 +22,11 @@
             <header id="header">
                 <h1>Thy Notebook Better Work!!!!</h1>
             </header>
-            <div id="left" style="float:left;width:300px;">
-                
+            <div id="left" style="float:left;width:300px;">               
                 <ul>
                     <li ng-click="openAddNotebook()" >Create Notebook</li>
-                    <li ng-repeat="notebook in notebooks" ng-click="sendNotebook(notebook)" id="notebook">
-                        {{ notebook.Name }}<p></p>                       
+                    <li ng-repeat="notebook in notebooks" ng-click="filterNotebook(notebook.NotebookId)" id="notebook">
+                        {{ notebook.Name }}<p></p>
                     </li>
                 </ul>
             </div>

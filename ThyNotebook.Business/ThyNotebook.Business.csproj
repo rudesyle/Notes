@@ -43,9 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\PetaPoco.cs" />
-    <Compile Include="NoteContent.cs" />
-    <Compile Include="Note.cs" />
-    <Compile Include="Notebook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
