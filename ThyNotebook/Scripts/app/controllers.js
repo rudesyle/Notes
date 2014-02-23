@@ -8,20 +8,6 @@
         filterText: ''
     };
 
-    $scope.gridOptions = {
-        data: 'selectedNotes',
-        jqueryUITheme: true,
-        columnDefs: [{ field: 'Name', displayName: 'Name' }, { field: 'CreateDate', displayName: 'Created' }, { field: 'UpdateDate', displayName: 'Last Updated' }],
-        enableRowSelection: true,
-        selectedItems: $scope.selectedGridItem,
-        filterOptions: $scope.filterOptions,
-        multiSelect: false,
-        afterSelectionChange: function (rowItem,event) {
-            $scope.note = rowItem.entity;
-            $scope.open();
-        }
-    };
-
     $scope.notebookFilter = function () {
         var filterText = 'NotebookId:1';
         if ($scope.filterOptions.filterText === '') {
@@ -60,6 +46,10 @@
 
     $scope.note = null;
 
+    $scope.editedNote = null;
+
+    $scope.notebooks = [];
+
     $scope.selectedNotes = [];
 
     $scope.open = function () {
@@ -73,6 +63,9 @@
                 },
                 note: function () {
                     return $scope.note;
+                },
+                availableNotebooks: function () {
+                    return $scope.notebooks;
                 }
             }
         });
@@ -86,7 +79,6 @@
     };
 
     $scope.saveNote = function () {
-        console.log($scope.note);
         $http({
             url: '/breeze/notebook/SaveNote',
             method: "POST",
@@ -128,6 +120,7 @@
             url: 'breeze/notebook/getAllNotebooks'
         }).
         success(function (data, status, headers, config) {
+            console.log();
             $scope.notebooks = data.Notebooks;
             $scope.notes = data.Notes;
             $scope.selectedNotebook = data.Notes;
@@ -137,31 +130,24 @@
         });
     };
 
+    $scope.showNote = function (note) {
+        $scope.editedNote = note;
+    };
+
     $scope.filterNotebook = function (notebookId) {
         $scope.selectedNotes = [];
         for (var i = 0; i <= $scope.notes.length - 1; i++) {
             if ($scope.notes[i].NotebookId == notebookId) {
                 $scope.selectedNotes.push($scope.notes[i]);
+                
             }
             
         }
+        console.log($scope.selectedNotes);
     };
 
     $scope.getAllNotebooks();
 }
-
-var ModalInstanceCtrl = function ($scope, $modalInstance,$http, note) {
-
-    $scope.editedNote = note;
-
-    $scope.ok = function () {
-        $modalInstance.close($scope.editedNote);
-    };
-
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-};
 
 var CreateNotebookCtrl = function ($scope, $modalInstance, $http) {
 

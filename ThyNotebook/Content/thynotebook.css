@@ -7,21 +7,11 @@ header h1, h2 {
 
 header h2 { font-size: 2em; }
 
-header input {
-    font-size: 3em;
-    margin: 0.25em 0 0.5em 0;
-    padding: 8px;
+html, body{
+    min-height: 100% !important;
+    height: 100%;   
+    font-family:arial;font-size:10px;
 }
-
-section {
-}
-
-section .mark-all {
-    position: relative;
-    top: -15px;
-}
-
-section .mark-all label { font-size: .75em; }
 
 section li {
     border-bottom: 1px solid rgb(191, 191, 191);
@@ -33,9 +23,31 @@ section li {
 #notebook,.ngRow,.ng-binding{
     cursor:pointer !important;
 }
-#header {
-    height: 100px;
+
+#applicationHost  {
+    display: table;
 }
+
+#row  {
+    display: table-row;
+}
+
+#leftContent, #rightContent, #middleContent, #topContent {
+    display: table-cell;
+    border:1px  solid rgb(191, 191, 191);
+    min-height: 100% !important;
+    height: 100%;
+}
+
+#leftContent {
+    width:200px;
+    background-color: rgb(191, 191, 191);
+}
+
+#middleContent {
+    width:200px
+}
+
 .gridStyle
 {
     border: 1px solid rgb(212,212,212);

@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThyNotebook.Web", "ThyNoteb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThyNotebook.Data", "ThyNotebook.Data\ThyNotebook.Data.csproj", "{EE35DAF3-1EB3-44BF-94F7-74CA52185605}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThyNotebook.Business", "ThyNotebook.Business\ThyNotebook.Business.csproj", "{FADA800B-C5EE-4188-BB42-D0184AEA4D80}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E724ED74-CC65-49B5-94A3-474B0FA98EE5}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
@@ -28,10 +26,6 @@ Global
 		{EE35DAF3-1EB3-44BF-94F7-74CA52185605}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE35DAF3-1EB3-44BF-94F7-74CA52185605}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE35DAF3-1EB3-44BF-94F7-74CA52185605}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FADA800B-C5EE-4188-BB42-D0184AEA4D80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FADA800B-C5EE-4188-BB42-D0184AEA4D80}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FADA800B-C5EE-4188-BB42-D0184AEA4D80}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FADA800B-C5EE-4188-BB42-D0184AEA4D80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
