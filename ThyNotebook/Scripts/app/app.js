@@ -1,8 +1,9 @@
-﻿; var app = angular
-    .module('notebook', ['ui.bootstrap','ngGrid' ]);
+﻿;
+var app = angular
+    .module('notebook', ['ui.bootstrap', 'ui.tinymce']);
 
-app.factory('notebookService', function () {
-    this.createNote = function (note) {
+app.factory('notebookService', function() {
+    this.createNote = function(note) {
         return $http({
             method: 'POST',
             url: '/breeze/notebook/SaveNote',
@@ -10,13 +11,3 @@ app.factory('notebookService', function () {
         });
     };
 });
-
-/*app.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/notebook', {
-        templateUrl: 'Index.html',
-        controller: ThyNotebookCtrl
-    });
-
-    $routeProvider.otherwise({ redirectTo: 'Index.html' });
-    }]);
-    */

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ThyNotebook.Business;
+using ThyNotebook.Entities;
 
 namespace ThyNotebook.Data
 {
@@ -18,15 +18,18 @@ namespace ThyNotebook.Data
 
             if (note.NoteId == 0)
             {
-                
                 note.CreateDate = note.UpdateDate;
-                GetDb().Insert("public.note", "noteid", note);
+                GetDb().Insert("note", "noteid", note);
             }
             else
             {
-                GetDb().Update("note", "NoteId", note);
+                GetDb().Update("note", "noteid", note);
             }
-            
+        }
+
+        public void DeleteNote(Note note)
+        {
+            GetDb().Delete("note", "noteid", note);
         }
     }
 }

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Linq;
+﻿using PetaPoco;
 
 namespace ThyNotebook.Data
 {
     public abstract class BaseData
     {
-        protected PetaPoco.Database GetDb()
+        protected Database GetDb()
         {
-            return new PetaPoco.Database("ThyNotebookConnection");
+            return new Database("ThyNotebookConnection");
         }
-
     }
 }

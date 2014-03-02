@@ -6,76 +6,84 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
 
         <title>Thy Notebook</title>
+        <link rel="stylesheet" href="Content/toastr.css" />
         <link rel="stylesheet" href="Content/thynotebook.css" />
+        <link rel="stylesheet" href="Content/ng-grid.min.css" />
+        <link rel="stylesheet" href="Content/thynotebook.css" />
+        <link rel="stylesheet" href="Content/bootstrap.min.css">
+
+        <!-- 3rd party libraries -->
+        <script src="Scripts/jquery-1.8.3.min.js"></script>
+        <script src="Scripts/q.js"></script>
+        <script src="Scripts/toastr.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.js"></script>
+        <script src="Scripts/ng-grid.min.js"></script>
+        <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.10.0.js"></script>
+        <!-- App libraries -->
+        <script src="Scripts/app/app.js"></script>
+        <script src="Scripts/app/controllers.js"></script>
+        <script src="Content/tinymce/jquery.tinymce.min.js"></script>
+        <script src="Content/tinymce/tinymce.min.js"></script>
+        <script src="Content/tinymce/tinymce.js"></script>
+        <script src="Scripts/bootbox.js"></script>
+        <script>
+            tinymce.init({ selector: 'textarea' });
+        </script>
     </head>
     <body>
-  
-        <div id="applicationHost" data-ng-controller="ThyNotebookCtrl" class="ng-cloak">
-            <div id="modal-to-open" title="Notebook Name" ui-jq="dialog" ui-options="{width: 500, height:400, autoOpen: false, modal: true}" ></div>
-            <div id="addNotebookModal" title="Crreate Notebook" ui-jq="dialog" ui-options="{width: 250, height:200, autoOpen: false, modal: true}" ></div>
-            <div class="row">
-                <div id="topContent">
-                    <span class="title">Thy Notebook</span>
-                    <span>
-                        <input type="text" width="200" />
-                        <button class="btn" ng-click="search()">Search</button>
-                    </span>
-                    <span style="padding-left:100px">
-                        <button class="btn btn-primary" ng-click="openAddNote()">+ New Note</button>
-                    </span>
-                </div>
-            </div>
-            <div class="row">
-                <div id="leftContent">
+        <div id="applicationHost" data-ng-controller="ThyNotebookCtrl" class="ng-cloak" style="height: 100%; min-height: 100% !important;">
+            <!--<div id="modal-to-open" title="Notebook Name" ui-jq="dialog" ui-options="{width: 500, height:400, autoOpen: false, modal: true}" ></div>
+                <div id="addNotebookModal" title="Crreate Notebook" ui-jq="dialog" ui-options="{width: 250, height:200, autoOpen: false, modal: true}" ></div>
+                <div class="row">
+                    <div id="topContent">
+                        <span class="title">Thy Notebook</span>
+                        <span>
+                            <input type="text" width="200" />
+                            <button class="btn" ng-click="search()">Search</button>
+                        </span>
+                        <span style="padding-left:100px">
+                            <button class="btn btn-primary" ng-click="openAddNote()">+ New Note</button>
+                        </span>
+                    </div>
+                </div>--> 
+            <div class="row" style="height: 100%; min-height: 100% !important;">
+                <div id="leftContent" style="float: left;">
                     <ul>
-                        <li ng-click="openAddNotebook()">Create Notebook</li>
-                        <li ng-click="openAddNotebook()">Create Note</li>
-                        <li ng-repeat="notebook in notebooks" ng-click="filterNotebook(notebook.NotebookId)" id="notebook">
-                            {{ notebook.Name }}<p></p>
-                        </li>
+                        <li ng-click="openAddNotebook()">+ Add Notebook</li>
+                        <span ng-repeat="notebook in notebooks" ng-click="filterNotebook(notebook)" id="notebook">
+                            {{ notebook.Name }} -
+                            <span ng-click="openEditNotebook(notebook)">Edit</span>                  
+                            <p></p>
+                        </span>
                     </ul>
                 </div>
-                <div id="middleContent">
-                    <div ng-repeat="notebook in notebooks">{{ notebook.Notes}}
-                        <div ng-repeat="note in notebook.Notes" ng-click="showNote(note)" id="notebook" class="noteSummary">
-                            {{ note.Name}}<br/>
-                        </div>
+                
+                <div id="middleContent" style="float: left;">
+                    <div ng-repeat="note in notes| filter:{ NotebookId: selectedNotebookId }:strict" id="notebook" class="noteSummary">
+                        <span ng-click="showNote(note)">{{ note.Name }}</span>   <span ng-click="deleteNote(note)" class="deleteLink">Delete</span><br />
                     </div>
                 </div>
-                <div id="rightContent" ng-show="editedNote">
-                    <div class="modal-header">
-                        <h3>{{editedNote.Name}}</h3>{{editedNote.NotebookId}}
-                    </div>
-                    <div class="modal-body">
-                        <div>
-                            <label class="control-label" for="title">Note name</label>
-                            <input type="text" name="title" data-ng-model="editedNote.Name" />
-                            <label class="control-label" for="title">Notebook</label>
-                            <select ng-model="editedNote.NotebookId">
-                                <option ng-repeat="notebook in notebooks" value="{{notebook.NotebookId}}">{{notebook.Name}}</option>
-                            </select>
+
+                <div id="rightContent" >
+                    <div id="noteEditArea" ng-show="editedNote">
+                        <div class="noteEditAreaContainer">
+                            <div>
+                                <label class="control-label" for="title">Note name</label>
+                                <input type="text" name="title" data-ng-model="editedNote.Name" />
+                                <label class="control-label" for="title">Notebook</label>
+                                <select ng-model="editedNote.NotebookId">
+                                    <option ng-repeat="notebook in notebooks" value="{{notebook.NotebookId}}">{{notebook.Name}}</option>
+                                </select>
+                            </div>
+                            <textarea id="notebookContent" 
+                                      ui-tinymce="tinymceOptions"
+                                      ng-model="editedNote.Content" style="height: 400px; width: 800px;">
+                            </textarea>
                         </div>
-                        <br />
-                        <textarea id="notebookContent" cols="80" rows="20" data-ng-model="editedNote.Content"></textarea>
-                        <br />
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" ng-click="ok()">OK</button>
-                        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                        <button class="btn btn-primary" ng-click="saveNote()">OK</button>
                     </div>
                 </div>
-            </div>
-        </div>             
+            </div>    
+        </div>         
     </body>
 </html>
-
-<!-- 3rd party libraries -->
-<script src="Scripts/jquery-1.8.3.min.js"></script>
-<script src="Scripts/q.js"></script>
-<script src="Scripts/toastr.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.js"></script>
-<script src="Scripts/ng-grid.min.js"></script>
-<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.10.0.js"></script>
-<!-- App libraries -->
-<script src="Scripts/app/app.js"></script>
-<script src="Scripts/app/controllers.js"></script>

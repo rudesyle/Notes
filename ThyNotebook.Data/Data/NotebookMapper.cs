@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ThyNotebook.Business;
+﻿using System.Collections.Generic;
+using ThyNotebook.Entities;
 
 namespace ThyNotebook.Data
 {
@@ -27,13 +23,12 @@ namespace ThyNotebook.Data
                 return null;
             }
 
-            var prev = current;
-            
+            Notebook prev = current;
+
             current = notebook;
             current.Notes = new List<Note> {note};
 
             return prev;
         }
-    
     }
 }

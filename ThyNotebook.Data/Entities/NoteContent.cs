@@ -1,9 +1,10 @@
 ﻿using System;
+using PetaPoco;
 
-namespace ThyNotebook.Business
+namespace ThyNotebook.Entities
 {
-    [PetaPoco.TableName("NoteContent")]
-    [PetaPoco.PrimaryKey("NoteContentId")]
+    [TableName("NoteContent")]
+    [PrimaryKey("NoteContentId")]
     public class NoteContent
     {
         public int NoteContentId { get; set; }

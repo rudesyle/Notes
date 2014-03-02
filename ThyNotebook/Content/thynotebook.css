@@ -1,16 +1,8 @@
-﻿header { text-align: center; }
-
-header h1, h2 {
-    font-size: 4em;
-    text-shadow: rgba(0, 0, 0, .5) 2.5px 2.5px 2px;
-}
-
-header h2 { font-size: 2em; }
-
-html, body{
+﻿html, body, #fullheight {
+    font-family: arial;
+    font-size: 10px;
+    height: 100%;
     min-height: 100% !important;
-    height: 100%;   
-    font-family:arial;font-size:10px;
 }
 
 section li {
@@ -20,37 +12,29 @@ section li {
 
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
-#notebook,.ngRow,.ng-binding{
-    cursor:pointer !important;
+.deleteLink {
+    color: red;
+    cursor: pointer !important;
 }
 
-#applicationHost  {
-    display: table;
-}
-
-#row  {
-    display: table-row;
-}
+#notebook, .ngRow, .ng-binding { cursor: pointer !important; }
 
 #leftContent, #rightContent, #middleContent, #topContent {
-    display: table-cell;
-    border:1px  solid rgb(191, 191, 191);
-    min-height: 100% !important;
+    border: 1px solid rgb(191, 191, 191);
     height: 100%;
+    min-height: 100% !important;
 }
 
 #leftContent {
-    width:200px;
     background-color: rgb(191, 191, 191);
+    width: 200px;
 }
 
-#middleContent {
-    width:200px
-}
+#middleContent { width: 300px; }
 
-.gridStyle
-{
-    border: 1px solid rgb(212,212,212);
-    width: 800px;
-    height: 400px;
+#rightContent { padding: 25px 50px; }
+
+.noteEditAreaContainer {
+    overflow: hidden;
+    padding: 25px 25px;
 }

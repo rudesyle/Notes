@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ThyNotebook.Business;
+using ThyNotebook.Entities;
 
 namespace ThyNotebook.Data
 {
@@ -9,7 +9,8 @@ namespace ThyNotebook.Data
     {
         public List<Notebook> GetAll()
         {
-            return GetDb().Query<Notebook>("SELECT * FROM Notebook").ToList();
+            List<Notebook> list = GetDb().Query<Notebook>("SELECT * FROM Notebook").ToList();
+            return list;
         }
 
         public Notebook Save(Notebook notebook)
@@ -18,16 +19,20 @@ namespace ThyNotebook.Data
 
             if (notebook.NotebookId == 0)
             {
-
                 notebook.CreateDate = notebook.UpdateDate;
-                GetDb().Insert("notebook", "NotebookId", notebook);
+                GetDb().Insert("notebook", "notebookid", notebook);
             }
             else
             {
-                GetDb().Update("notebook", "NotebookId", notebook);
+                GetDb().Update("notebook", "notebookid", notebook);
             }
 
             return notebook;
+        }
+
+        public void Delete(Notebook notebook)
+        {
+            GetDb().Delete("notebook", "notebookid", notebook);
         }
     }
 }
