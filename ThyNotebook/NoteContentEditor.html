@@ -1,0 +1,22 @@
+﻿<div>
+    <div class="modal-header">
+        <h3>{{editedNote.Name}}</h3>
+    </div>
+    <div class="modal-body">
+        <div>
+            <label class="control-label" for="title">Note name</label>
+            <input type="text" name="title" data-ng-model="editedNote.Name" />
+            <label class="control-label" for="title">Notebook</label>
+            <select ng-model="editedNote.NotebookId">
+                <option ng-repeat="notebook in availableNotebooks" value="{{notebook.NotebookId}}">{{notebook.Name}}</option>
+            </select>
+        </div>
+        <br />
+        <textarea id="notebookContent" data-ng-model="editedNote.Content"></textarea>
+        <br />
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

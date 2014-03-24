@@ -234,6 +234,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.8.3.js" />
     <Content Include="Scripts\jquery-1.8.3.min.js" />
+    <Content Include="Scripts\jquery.elastic.source.js" />
     <Content Include="Scripts\ng-grid.min.js" />
     <Content Include="Scripts\nicEdit.js" />
     <Content Include="Scripts\nicEditorIcons.gif" />

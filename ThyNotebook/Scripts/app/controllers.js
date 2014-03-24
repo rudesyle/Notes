@@ -10,21 +10,6 @@ function ThyNotebookCtrl($scope, $http, $modal) {
         filterText: ''
     };
 
-    $scope.tinymceOptions = {
-        theme: "modern",
-        plugins: [
-            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-            "searchreplace wordcount visualblocks visualchars code fullscreen",
-            "insertdatetime media nonbreaking save table contextmenu directionality",
-            "emoticons template paste textcolor"
-        ],
-        toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-        toolbar2: "print preview media | forecolor backcolor emoticons",
-        image_advtab: true,
-        height: "400px",
-        width: "650px"
-    };
-
     $scope.notebookFilter = function() {
         var filterText = 'NotebookId:1';
         if ($scope.filterOptions.filterText === '') {
@@ -70,33 +55,16 @@ function ThyNotebookCtrl($scope, $http, $modal) {
 
     $scope.notebooks = [];
 
-    $scope.open = function() {
-        var modalInstance = $modal.open({
-            templateUrl: 'NoteContentEditor.html',
-            backdrop: 'static',
-            controller: ModalInstanceCtrl,
-            resolve: {
-                $http: function() {
-                    return $http;
-                },
-                note: function() {
-                    return $scope.note;
-                },
-                availableNotebooks: function() {
-                    return $scope.notebooks;
-                }
-            }
-        });
-
-        modalInstance.result.then(function(selectedNote) {
-            $scope.note = selectedNote;
-            $scope.saveNote();
-        }, function() {
-            console.log('Modal dismissed at: ' + new Date());
-        });
-    };
-
-    //$scope.$watch($attrs.model, _.debounce(saveNote, 5000), true);
+    
+    $scope.$watch('editedNote.Content', function (newValue, oldValue) {
+        if (newValue != oldValue) {
+            alert('texts changed: ' + JSON.stringify($scope.editedNote));
+            /*pendingServerInteractions.add('texts', function () {
+                console.log('saving: ' + JSON.stringify(newValue));
+                //do your save thing
+            });*/
+        }
+    }, true);
 
     $scope.saveNote = function() {
         $http({
@@ -176,13 +144,16 @@ function ThyNotebookCtrl($scope, $http, $modal) {
                 $scope.selectedNotebook = data.Notes;
             }).
             error(function(data, status) {
-                console.log("Request Failed");
+                toastr.fail("Request Failed");
             });
     };
 
     $scope.showNote = function(note) {
         $scope.editedNote = note;
         tinyMCE.activeEditor.setContent(note.Content);
+        $('.mce-toolbar-grp').hide();
+        $('.mce-toolbar').hide();
+        $('.mce-statusbar').hide();
     };
 
     $scope.filterNotebook = function(note) {
