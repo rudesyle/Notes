@@ -19,10 +19,16 @@ function ThyNotebookCtrl($scope, $http, $modal) {
         }
     };
 
-    $scope.openEditNotebook = function(notebook) {
+    $scope.openEditNotebook = function (notebook) {
+        if (notebook == null) {
+            notebook = {
+                Name: '',NotebookId:0
+            };
+        }
+
         $scope.newNotebook = notebook;
         var modalInstance = $modal.open({
-            templateUrl: 'NoteBookEditor.html',
+            templateUrl: 'NoteBookEdit.html',
             backdrop: 'modal',
             controller: CreateNotebookCtrl,
             resolve: {
@@ -49,24 +55,43 @@ function ThyNotebookCtrl($scope, $http, $modal) {
         });
     };
 
+    $scope.openAddNotebook = function () {
+        $scope.newNotebook = {
+            Name: '', NotebookId: 0
+        };
+
+        var modalInstance = $modal.open({
+            templateUrl: 'NoteBookNew.html',
+            backdrop: 'modal',
+            controller: CreateNotebookCtrl,
+            resolve: {
+                $http: function () {
+                    return $http;
+                },
+                notebook: function () {
+                    return $scope.newNotebook;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (newNotebook) {
+            $scope.newNotebook = newNotebook;
+            $scope.saveNotebook();
+            $scope.push(newNotebook);
+
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+        });
+    };
+
     $scope.note = null;
 
     $scope.editedNote = null;
 
     $scope.notebooks = [];
 
-    
-    $scope.$watch('editedNote.Content', function (newValue, oldValue) {
-        if (newValue != oldValue) {
-            alert('texts changed: ' + JSON.stringify($scope.editedNote));
-            /*pendingServerInteractions.add('texts', function () {
-                console.log('saving: ' + JSON.stringify(newValue));
-                //do your save thing
-            });*/
-        }
-    }, true);
-
-    $scope.saveNote = function() {
+    $scope.saveNote = function () {
+        $scope.editedNote.Content = tinyMCE.activeEditor.getContent();
         $http({
                 url: '/breeze/notebook/SaveNote',
                 method: "POST",
@@ -75,6 +100,7 @@ function ThyNotebookCtrl($scope, $http, $modal) {
             })
             .success(function(data, status, headers, config) {
                 toastr.success('Note saved');
+                $scope.push($scope.editedNote);
             })
             .error(function(data, status, headers, config) {
                 $scope.errorMessage = (data || { message: "Create operation failed." }).message + (' [HTTP-' + status + ']');
@@ -83,36 +109,40 @@ function ThyNotebookCtrl($scope, $http, $modal) {
 
     $scope.deleteNote = function(note) {
         bootbox.confirm('Are you sure you want to delete this note?', function(result) {
-            /*$http({
+            $http({
                 url: '/breeze/notebook/DeleteNote',
                 method: "POST",
                 data: note,
                 headers: { 'Content-Type': 'application/json' }
             })
             .success(function (data, status, headers, config) {
-                $scope.notes.splice(note);
-                    toastr.success('Note deleted');
-                })
+                var index = $scope.notes.indexOf(note);
+                $scope.notes.splice(index, 1);
+                toastr.success('Note deleted');
+            })
             .error(function (data, status, headers, config) {
                 $scope.errorMessage = (data || { message: "Delete Note failed." }).message + (' [HTTP-' + status + ']');
-            });*/
+            });
         });
     };
 
-    $scope.deleteNotebook = function(notebook) {
-        $http({
-                url: '/breeze/notebook/DeleteNotebook',
-                method: "POST",
-                data: notebook,
-                headers: { 'Content-Type': 'application/json' }
-            })
-            .success(function(data, status, headers, config) {
-                $scope.notebooks.splice(notebook);
-                toastr.success('Notebook deleted');
-            })
-            .error(function(data, status, headers, config) {
-                $scope.errorMessage = (data || { message: "Delete Note failed." }).message + (' [HTTP-' + status + ']');
-            });
+    $scope.deleteNotebook = function (notebook) {
+        bootbox.confirm('Are you sure you want to delete this notebook?', function(result) {
+            $http({
+                    url: '/breeze/notebook/DeleteNotebook',
+                    method: "POST",
+                    data: notebook,
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .success(function(data, status, headers, config) {
+                    var index = $scope.notebooks.indexOf(notebook);
+                    $scope.notebooks.splice(index, 1);
+                    toastr.success('Notebook deleted');
+                })
+                .error(function(data, status, headers, config) {
+                    $scope.errorMessage = (data || { message: "Delete Note failed." }).message + (' [HTTP-' + status + ']');
+               });
+        });
     };
 
     $scope.saveNotebook = function() {
@@ -123,7 +153,6 @@ function ThyNotebookCtrl($scope, $http, $modal) {
                 headers: { 'Content-Type': 'application/json' }
             })
             .success(function(data, status, headers, config) {
-                $scope.notebooks.push(data);
                 $scope.newNotebook = null;
                 toastr.success('Notebook saved');
             })
@@ -148,7 +177,7 @@ function ThyNotebookCtrl($scope, $http, $modal) {
             });
     };
 
-    $scope.showNote = function(note) {
+    $scope.createNote = function () {
         $scope.editedNote = note;
         tinyMCE.activeEditor.setContent(note.Content);
         $('.mce-toolbar-grp').hide();
@@ -156,10 +185,27 @@ function ThyNotebookCtrl($scope, $http, $modal) {
         $('.mce-statusbar').hide();
     };
 
+    $scope.showNote = function (note) {
+        if (note == null) {
+            note = {
+                Name: '', NotebookId: 0, NoteId: 0
+            };
+        }
+
+        $scope.editedNote = note;
+        tinyMCE.activeEditor.setContent(note.Content);
+        /*$('.mce-toolbar-grp').hide();
+        $('.mce-toolbar').hide();
+        $('.mce-statusbar').hide();*/
+    };
+
     $scope.filterNotebook = function(note) {
         $scope.selectedNotebookId = 0;
         $scope.selectedNotebookId = note.NotebookId;
-        console.log($scope.selectedNotebookId);
+    };
+
+    $scope.noteFilter = function (note) {
+        return note.NotebookId == $scope.selectedNotebookId;
     };
 
     $scope.getAllNotebooks();
@@ -176,20 +222,13 @@ var CreateNotebookCtrl = function($scope, $modalInstance, $http, notebook) {
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
     };
-
-    $scope.delete = function() {
-        if (confirm("Are you sure?")) {
-            $scope.newNotebook.IsDeleted = true;
-            $modalInstance.close($scope.newNotebook);
-        }
-    };
 };
 
 var ModalInstanceCtrl = function($scope, $modalInstance, $http, note) {
 
     $scope.editedNote = note;
 
-    $scope.ok = function() {
+    $scope.ok = function () {
         $modalInstance.close($scope.editedNote);
     };
 
@@ -197,3 +236,5 @@ var ModalInstanceCtrl = function($scope, $modalInstance, $http, note) {
         $modalInstance.dismiss('cancel');
     };
 };
+
+

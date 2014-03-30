@@ -17,6 +17,10 @@ section li {
     cursor: pointer !important;
 }
 
+.title {
+    
+}
+
 #notebook, .ngRow, .ng-binding { cursor: pointer !important; }
 
 #leftContent, #rightContent, #middleContent, #topContent {
@@ -24,6 +28,8 @@ section li {
     height: 100%;
     min-height: 100% !important;
 }
+
+#AddNotebook{cursor: pointer}
 
 #leftContent {
     background-color: rgb(191, 191, 191);
