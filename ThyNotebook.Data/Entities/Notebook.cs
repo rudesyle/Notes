@@ -27,5 +27,7 @@ namespace ThyNotebook.Entities
 
         [ResultColumn]
         public bool IsDeleted { get; set; }
+
+        public bool IsNew { get; set; }
     }
 }

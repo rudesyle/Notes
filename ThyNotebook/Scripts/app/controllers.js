@@ -57,7 +57,7 @@ function ThyNotebookCtrl($scope, $http, $modal) {
 
     $scope.openAddNotebook = function () {
         $scope.newNotebook = {
-            Name: '', NotebookId: 0
+            Name: '', NotebookId: 0, IsNew:true
         };
 
         var modalInstance = $modal.open({
@@ -77,7 +77,11 @@ function ThyNotebookCtrl($scope, $http, $modal) {
         modalInstance.result.then(function (newNotebook) {
             $scope.newNotebook = newNotebook;
             $scope.saveNotebook();
-            $scope.push(newNotebook);
+
+            if (newNotebook.IsNew == true) {
+                newNotebook.IsNew = false;
+                $scope.notebooks.push(newNotebook);
+            }
 
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
@@ -87,6 +91,8 @@ function ThyNotebookCtrl($scope, $http, $modal) {
     $scope.note = null;
 
     $scope.editedNote = null;
+
+    $scope.selectedNotebook = null;
 
     $scope.notebooks = [];
 
@@ -100,28 +106,34 @@ function ThyNotebookCtrl($scope, $http, $modal) {
             })
             .success(function(data, status, headers, config) {
                 toastr.success('Note saved');
-                $scope.push($scope.editedNote);
+                $scope.editedNote = data;
+                console.log(data);
+                if ($scope.editedNote.IsNew == true) {
+                    $scope.editedNote.IsNew = false;
+                    $scope.notes.push($scope.editedNote);
+                }
             })
             .error(function(data, status, headers, config) {
-                $scope.errorMessage = (data || { message: "Create operation failed." }).message + (' [HTTP-' + status + ']');
+                $scope.toastr.successerrorMessage = (data || { message: "Create operation failed." }).message + (' [HTTP-' + status + ']');
             });
     };
 
-    $scope.deleteNote = function(note) {
+    $scope.deleteNote = function() {
         bootbox.confirm('Are you sure you want to delete this note?', function(result) {
             $http({
                 url: '/breeze/notebook/DeleteNote',
                 method: "POST",
-                data: note,
+                data: $scope.editedNote,
                 headers: { 'Content-Type': 'application/json' }
             })
             .success(function (data, status, headers, config) {
-                var index = $scope.notes.indexOf(note);
+                var index = $scope.notes.indexOf($scope.editedNote);
                 $scope.notes.splice(index, 1);
                 toastr.success('Note deleted');
+                $scope.editedNote = null;
             })
             .error(function (data, status, headers, config) {
-                $scope.errorMessage = (data || { message: "Delete Note failed." }).message + (' [HTTP-' + status + ']');
+                toastr.fail(data);
             });
         });
     };
@@ -153,7 +165,7 @@ function ThyNotebookCtrl($scope, $http, $modal) {
                 headers: { 'Content-Type': 'application/json' }
             })
             .success(function(data, status, headers, config) {
-                $scope.newNotebook = null;
+                $scope.newNotebook = data;
                 toastr.success('Notebook saved');
             })
             .error(function(data, status, headers, config) {
@@ -180,32 +192,26 @@ function ThyNotebookCtrl($scope, $http, $modal) {
     $scope.createNote = function () {
         $scope.editedNote = note;
         tinyMCE.activeEditor.setContent(note.Content);
-        $('.mce-toolbar-grp').hide();
-        $('.mce-toolbar').hide();
-        $('.mce-statusbar').hide();
     };
 
     $scope.showNote = function (note) {
+        tinyMCE.activeEditor.setContent("");
         if (note == null) {
             note = {
-                Name: '', NotebookId: 0, NoteId: 0
+                Name: '', NotebookId: 0, NoteId: 0, IsNew:true
             };
         }
 
         $scope.editedNote = note;
         tinyMCE.activeEditor.setContent(note.Content);
-        /*$('.mce-toolbar-grp').hide();
-        $('.mce-toolbar').hide();
-        $('.mce-statusbar').hide();*/
     };
 
-    $scope.filterNotebook = function(note) {
-        $scope.selectedNotebookId = 0;
-        $scope.selectedNotebookId = note.NotebookId;
+    $scope.filterNotebook = function (notebook) {
+        $scope.selectedNotebook = notebook;
     };
 
     $scope.noteFilter = function (note) {
-        return note.NotebookId == $scope.selectedNotebookId;
+        return note.NotebookId == $scope.selectedNotebook.NotebookId;
     };
 
     $scope.getAllNotebooks();

@@ -20,8 +20,12 @@ namespace ThyNotebook.Entities
         [Column(Name = "content")]
         public string Content { get; set; }
 
+        [Column(Name = "createdate")]
         public DateTime CreateDate { get; set; }
 
+        [Column(Name = "updatedate")]
         public DateTime UpdateDate { get; set; }
+
+        public bool IsNew { get; set; }
     }
 }

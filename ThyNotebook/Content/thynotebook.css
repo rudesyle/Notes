@@ -17,6 +17,56 @@ section li {
     cursor: pointer !important;
 }
 
+
+.noteSummary {
+    font-size: 10px;
+    border-top-style: solid;
+    border-top-width: 1px;
+    padding: 10px 2px 10px 2px;
+}
+
+#noteSummaryNoteContent {
+    height: 60px;   
+    min-height: 60px;
+    max-height: 60px;
+    display: inline-block;
+}
+
+#noteSummaryNoteName {
+    font-size: 12px;
+    font-weight: bolder;
+}
+
+.columnHeader {
+    font-size: 14px;
+    background-color: lightblue;
+    font-weight: bolder;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+#noteCreateDate {
+    font-weight: bolder;
+    color:steelblue;
+}
+
+#noteTitle {
+    width: 200px;
+}
+
+.icon {
+    cursor: pointer
+}
+
+.mce-menubar{
+    display: none !important;
+}
+
+.mce-statusbar{
+    display: none !important;
+}
+
+
 .title {
     
 }

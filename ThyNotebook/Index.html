@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
 <html data-ng-app="notebook">
 <head>
     <meta charset="utf-8" />
@@ -31,9 +31,10 @@
     
     <script>
         tinymce.init({ selector: 'textarea' });
+        $("#notebookContent").elastic();
     </script>
 </head>
-    <body>
+    <body><hello></hello>
             <div id="applicationHost" data-ng-controller="ThyNotebookCtrl" class="ng-cloak" style="height: 100%; min-height: 100% !important;">
                 <div id="modal-to-open" title="Notebook Name" ui-jq="dialog" ui-options="{width: 500, height:400, autoOpen: false, modal: true}"></div>
                 <div id="addNotebookModal" title="Crreate Notebook" ui-jq="dialog" ui-options="{width: 250, height:200, autoOpen: false, modal: true}"></div>
@@ -49,44 +50,52 @@
                         </span>
                     </div>
                 </div>
-                <div class="row" style="height: 100%; min-height: 100% !important;">
+                <div class="row" style="height: 100%; min-height: 100% !important; margin-left: 20px">
                     <div id="leftContent" style="float: left;">
-                        <ul>
-                            <li ng-click="openAddNotebook()" id="AddNotebook">+ Add Notebook</li>
-                            <span ng-repeat="notebook in notebooks" ng-click="filterNotebook(notebook)" id="notebook" class="dropdown">
-                                {{ notebook.Name }} -
-                                    <a class="dropdown-toggle">
-                                        Props
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li ng-click="openEditNotebook(notebook)">Edit Notebook</li>
-                                        <li ng-click="deleteNotebook(notebook)">Delete Notebook</li>
-                                    </ul>
+                        <div class="columnHeader">Notebooks</div>
+                        <span ng-click="openAddNotebook()" id="AddNotebook">+ Add Notebook</span><br/><br/>
 
-                            </span>
-                        </ul>
+                        <span ng-repeat="notebook in notebooks" ng-click="filterNotebook(notebook)" id="notebook" class="dropdown">
+                            {{ notebook.Name }} -
+                            <a class="dropdown-toggle">
+                                Props
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li ng-click="openEditNotebook(notebook)">Edit Notebook</li>
+                                <li ng-click="deleteNotebook(notebook)">Delete Notebook</li>
+                            </ul>
+                            <br/>
+                        </span>
+
                     </div>
 
                     <div id="middleContent" style="float: left;">
+                        <div id="selectedNotebook" ng-show="selectedNotebook.Name" class="columnHeader">
+                            {{ selectedNotebook.Name }} Notes
+                        </div>
                         <div ng-repeat="note in notes| filter:noteFilter" id="notebook" class="noteSummary">
-                            <span ng-click="showNote(note)">{{ note.Name }}</span>   <span ng-click="deleteNote(note)" class="deleteLink">Delete</span><br />
+                            <span ng-click="showNote(note)">
+                                <span id="noteSummaryNoteName">{{ note.Name }}</span><br/>
+                                <div id="noteSummaryNoteContent">
+                                    <span id="noteCreateDate">{{ note.CreateDate | date:'MM/dd/yy' }}</span><span>{{ note.Content | limitTo:20 }}</span>
+                                </div>
+                            </span><br />
                         </div>
                     </div>
 
-                    <div id="rightContent" style="margin-top:-40px">
+                    <div id="rightContent">
                         <div id="noteEditArea" ng-show="editedNote">
                             <div class="noteEditAreaContainer">
-                                <label class="control-label" for="title">Note name</label>
-                                <input type="text" name="title" data-ng-model="editedNote.Name" />
-                                <label class="control-label" for="title">Notebook</label>
-                                <select ng-model="editedNote.NotebookId">
-                                    <option ng-repeat="notebook in notebooks" value="{{notebook.NotebookId}}">{{notebook.Name}}</option>
-                                </select>
-
-                                <textarea id="notebookContent"
-                                          ng-model="editedNote.Content" style="height: 450px; width: 780px;"></textarea>
+                                <input type="text" id="noteTitle" data-ng-model="editedNote.Name" />
+                                &nbsp;&nbsp;
+                                <select ng-model="editedNote.NotebookId" ng-options="notebook.NotebookId as notebook.Name for notebook in notebooks"></select>
+                                <span style="float:right">
+                                    <img src="Content/icons/disk.png" class="icon" ng-click="saveNote()" />&nbsp;&nbsp;
+                                    <img src="Content/icons/application_delete.png" class="icon" ng-click="deleteNote()" />
+                                </span>
+                            <textarea id="notebookContent"
+                                        ng-model="editedNote.Content" style="height: 650px; width: 780px;"></textarea>
                             </div>
-                            <button class="btn btn-primary" ng-click="saveNote()">OK</button>
                         </div>
                     </div>
                 </div>

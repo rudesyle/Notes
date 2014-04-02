@@ -28,15 +28,14 @@ namespace ThyNotebook.Web.Controllers
         public Notebook SaveNotebook(Notebook notebook)
         {
             var notebookDb = new NotebookDb();
-            Notebook newNoteBook = notebookDb.Save(notebook);
-            return newNoteBook;
+            return notebookDb.Save(notebook);
         }
 
         [HttpPost]
-        public void SaveNote(Note note)
+        public Note SaveNote(Note note)
         {
             var noteDb = new NoteDb();
-            noteDb.Save(note);
+            return noteDb.Save(note);
         }
 
         [HttpPost]
